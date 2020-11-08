@@ -81,7 +81,7 @@
          // Create food    
          food = new Rectangle(80, 80, 10, 10);
          //Create fruit
-         fruit = new Rectangle(80, 80, 13, 13);
+         fruit = new Rectangle(80, 80, 10, 10);
 
          // Load saved highscores  
          if (localStorage.highscores) { highscores = localStorage.highscores.split(','); }
