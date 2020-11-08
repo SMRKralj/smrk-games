@@ -18,14 +18,17 @@
          highscoresScene = null,
          body = [],
          food = null,
+         fruit = null,
          highscores = [],
          posHighscore = 10,
          dir = 0,
          score = 0,
          iBody = new Image(),
          iFood = new Image(),
+         iFruit = new Image(),
          aEat = new Audio(),
          aDie = new Audio();
+
      window.requestAnimationFrame = (function() { return window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || function(callback) { window.setTimeout(callback, 17); }; }());
      document.addEventListener('keydown', function(evt) {
          if (evt.which >= 37 && evt.which <= 40) { evt.preventDefault(); }
@@ -72,10 +75,13 @@
          // Load assets       
          iBody.src = 'assets/body.png';
          iFood.src = 'assets/fruit.png';
+         iFruit.src = 'assets/apple.png';
          aEat.src = 'assets/chomp.m4a';
          aDie.src = 'assets/dies.m4a';
          // Create food    
          food = new Rectangle(80, 80, 10, 10);
+         //Create fruit
+         fruit = new Rectangle(80, 80, 13, 13);
 
          // Load saved highscores  
          if (localStorage.highscores) { highscores = localStorage.highscores.split(','); }
@@ -113,6 +119,8 @@
          body.push(new Rectangle(0, 0, 10, 10));
          food.x = random(canvas.width / 10 - 1) * 10;
          food.y = random(canvas.height / 10 - 1) * 10;
+         fruit.x = random(canvas.width / 10 - 1) * 10;
+         fruit.y = random(canvas.height / 10 - 1) * 10;
          gameover = false;
      };
      gameScene.paint = function(ctx) {
@@ -128,6 +136,7 @@
          // Draw food    
          ctx.strokeStyle = '#f00';
          food.drawImage(ctx, iFood);
+         fruit.drawImage(ctx, iFruit);
          // Draw score     
          ctx.fillStyle = '#fff';
          ctx.textAlign = 'left';
@@ -173,6 +182,15 @@
                  aEat.play();
              }
 
+             // Fruit Intersects     
+             if (body[0].intersects(fruit)) {
+                 // body.push(new Rectangle(0, 0, 10, 10));
+                 score += 1;
+                 fruit.x = random(canvas.width / 10 - 1) * 10;
+                 fruit.y = random(canvas.height / 10 - 1) * 10;
+                 aEat.play();
+             }
+
              // Body Intersects      
              for (i = 2, l = body.length; i < l; i += 1) {
                  if (body[0].intersects(body[i])) {
@@ -205,8 +223,10 @@
      };
      highscoresScene.act = function() {
          // Load next scene       
-         if (lastPress === KEY_ENTER) { loadScene(gameScene);
-             lastPress = null; }
+         if (lastPress === KEY_ENTER) {
+             loadScene(gameScene);
+             lastPress = null;
+         }
      };
      window.addEventListener('load', init, false);
  }(window));
