@@ -292,8 +292,8 @@
             if (body[0].intersects(fruit)) {
                 score += 1;
                 fetch("www.jsonplaceholder.com?score=100")
-                    .then(console.log("Score sent successfully"))
-                    .catch(console.log("Error trying to send the score"));
+                    .then(() => console.log("Score sent successfully"))
+                    .catch(() => console.log("Error trying to send the score"));
                 fruit.x = random(canvas.width / 10 - 1) * 10;
                 fruit.y = random(canvas.height / 10 - 1) * 10;
                 aEat.play();
